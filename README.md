@@ -15,6 +15,8 @@
 
 ## Background
 
+Flows Redis cache uses Redis sets to implement tags. These sets are by design persistent. To reduce memory usage references to expired keys needs to be removed.
+
 ## Install
 
 ```
