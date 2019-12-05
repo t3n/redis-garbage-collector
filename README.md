@@ -19,17 +19,33 @@ Flows Redis cache uses Redis sets to implement tags. These sets are by design pe
 
 ## Install
 
+Using script locally
+```bash
+git clone https://github.com/t3n/redis-garbage-collector.git
+cd redis-garbage-collector
+pip install -r requirements.txt
 ```
+
+Using docker
+```bash
+docker pull quay.io/t3n/redis-garbage-collector:latest
 ```
 
 ## Usage
 
+Using script locally
+```bash
+rgc.py Cache --dry-run
+rgc.py Cache
 ```
+
+Using docker
+```bash
+docker run quay.io/t3n/redis-garbage-collector:latest Cache
+docker run quay.io/t3n/redis-garbage-collector:latest Cache --dry-run
 ```
 
 ## Contributing
-
-See [the contributing file](CONTRIBUTING.md)!
 
 PRs accepted.
 
