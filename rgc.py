@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse
+import configargparse
 import redis
 
 
@@ -47,8 +47,7 @@ def removeable_entries(valid: list, total: list) -> list:
     return result
 
 
-def clean(name: str, dry_run: bool) -> None:
-    r = redis.Redis(db=2, decode_responses=True)
+def clean(r, name: str, dry_run: bool) -> None:
 
     entry = scan_keys(r, name + ":entry:*")
     entries = list_entries(r, name + ":entries")
@@ -78,14 +77,19 @@ def clean(name: str, dry_run: bool) -> None:
                 r.srem(name + ":tag:" + i, t.split(":")[-1])
                 r.srem(t, i)
 
-    r.close()
-
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Clean up Flow cache in Redis.')
-    parser.add_argument('Cache', metavar='cache', type=str, help='Name of cache to clean up.')
-    parser.add_argument('--dry-run', action='store_true')
+    parser = configargparse.ArgumentParser(description='Clean up Flow cache in Redis.')
+    parser.add('Cache', metavar='cache', type=str, help='Name of cache to clean up.')
+    parser.add('--host', type=str, default='127.0.0.1', env_var='RGC_HOST', help='IP address of redis server.')
+    parser.add('--port', type=int, default=6379, env_var='RGC_PORT', help='Port of redis server.')
+    parser.add('--db', type=int, default=2, env_var='RGC_DB', help='DB of redis server.')
+    parser.add('--dry-run', action='store_true')
 
     args = parser.parse_args()
 
-    clean(args.Cache, args.dry_run)
+    r = redis.Redis(host=args.host, port=args.port, db=args.db, decode_responses=True)
+
+    clean(r, args.Cache, args.dry_run)
+
+    r.close()

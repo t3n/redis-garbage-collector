@@ -28,21 +28,21 @@ pip install -r requirements.txt
 
 Using docker
 ```bash
-docker pull quay.io/t3n/redis-garbage-collector:latest
+docker pull quay.io/t3n/redis-garbage-collector:0.2.0
 ```
 
 ## Usage
 
 Using script locally
 ```bash
-rgc.py Cache --dry-run
-rgc.py Cache
+./rgc.py Cache --dry-run
+./rgc.py Cache
 ```
 
 Using docker
 ```bash
-docker run quay.io/t3n/redis-garbage-collector:latest Cache
-docker run quay.io/t3n/redis-garbage-collector:latest Cache --dry-run
+docker run --network="host" quay.io/t3n/redis-garbage-collector:0.2.0 Cache
+docker run --network="host" quay.io/t3n/redis-garbage-collector:0.2.0 Cache --dry-run
 ```
 
 ## Contributing
